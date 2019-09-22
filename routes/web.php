@@ -11,46 +11,32 @@
 |
 */
 
-use Illuminate\Support\Facades\Route;
-
-
-Route::group(['prefix' => 'admin'], function () {
-    Route::get('company', 'Admin\AdminCompanyOperateController@getAllCompany');
-    Route::post('company', 'Admin\AdminCompanyOperateController@addCompany');
-    Route::delete('company', 'Admin\AdminCompanyOperateController@deleteCompanyByCompanyId');
-
-    Route::get('customer', 'Admin\AdminCustomerController@getAllCustomersByCompanyId');
-    Route::get('customer/detail', 'Admin\AdminCustomerController@getCustomerInfoByCustomerId');
-    Route::post('customer', 'Admin\AdminCustomerController@addCustomer');
-    Route::delete('customer', 'Admin\AdminCustomerController@deleteCustomer');
+Route::group(["prefix"=>"companies"],function(){
+    //获取所有当前企业的问题
+    Route::get("/{companyid}/questions","Auth\CompanyController@getAllQuestionsInfo");
+    //新增问题
+    Route::post("/{companyid}/addQuestion","Auth\CompanyController@addQuestion");
+    //查看客服问答
+    Route::get("/{companyid}/showQuestions","Auth\CompanyController@showQuestions");
+    //获取首句内容
+    Route::get("/{companyid}/getFirstContent","Auth\CompanyController@getFirstContent");
+    //修改首句内容put
+    Route::post("/{companyid}/updateFirstContent","Auth\CompanyController@updateFirstContent");
+    //显示热门问题get
+    Route::get("/{companyid}/showHotQuestions","Auth\CompanyController@showHotQuestions");
 });
+//返回指定客服聊天记录
+Route::get("/records/{id}","Auth\CompanyController@getRecordDetail");
 
+//显示所有黑名单
+Route::get("/blacklists/{id}","Auth\CompanyController@getAllBalckLists");
+//显示指定黑名单详细内容
+Route::get("/blacklists/detial/{id}","Auth\CompanyController@showBlackList");
+//将指定黑名单人员移除黑名单
+Route::delete("/blacklists/{id}","Auth\CompanyController@removeBlackList");
+//将指定黑名单人员加入黑名单put
+Route::any("/blacklists/{id}","Auth\CompanyController@addBlackList");
 
-
-Route::get('/admin/person/search','Admin\AdminPersonOperateController@searchPersonalUser');
-Route::get('/admin/person','Admin\AdminPersonOperateController@getAllPersonalUser');
-Route::post('/admin/person','Admin\AdminPersonOperateController@addPersonalUser');
-Route::post('/admin/person/state/update','Admin\AdminPersonOperateController@updatePersonalUserByUserId');
-
-
-
-
-//搜索问题
-Route::get('/admin/questions/search','Admin\AdminQuestionOperateController@searchQuestion');
-//获取全部问题
-Route::get('/admin/questions','Admin\AdminQuestionOperateController@getAllQuestions');
-//通过id获取信息
-Route::post('/admin/questions/detail','Admin\AdminQuestionOperateController@getQuestionDetailByQuestionId');
-//通过审核
-Route::post('/admin/questions/access','Admin\AdminQuestionOperateController@accessQuestionByQuestionId');
-//取消通过审核
-Route::post('/admin/questions/revoke','Admin\AdminQuestionOperateController@revokeQuestionByQuestionId');
-//删除问题
-Route::delete('/admin/questions','Admin\AdminQuestionOperateController@deleteQuestionByQuestionId');
-//更新图片
-Route::post('/picture/updatepicture','Picture\PictureUpdateController@updatePicture');
-//输出图片
-Route::GET('/picture/showpicture/{name}','Picture\PictureUpdateController@showPicture');
 
 
 
