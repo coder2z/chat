@@ -49,7 +49,7 @@ class AdminCompanyOperateController extends Controller
     public function deleteCompanyByCompanyId(CompanyIdRequest $request)
     {
         $id = $request->get('company_id');
-        
+
         $userCompany = User::where('id', $id)->first();
         $resultUserCompany = $userCompany->delete();
 

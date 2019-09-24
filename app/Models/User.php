@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+
+class User extends Model//用户表
 {
-    //关联的数据表
+  	protected $rememberTokenName = NULL;
     protected $table = 'chat_user';
-    //关闭时间戳
+    protected $primaryKey = 'id';
     public $timestamps = false;
+    protected $guarded=[];
 }

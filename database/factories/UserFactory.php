@@ -14,20 +14,20 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\Models\User::class, function (Faker $faker) {
-    // return [
-    //     'cname' => $faker->name,
-    //     'status' => rand(1,2),
-    //     'password' => bcrypt('123456'),
-    //     'type' => 'company',
-    //     'tel' => '88888888',
-    //     'created_at' => date('Y-m-d h:i:s', time())
-    // ];
     return [
         'cname' => $faker->name,
-        'status' => rand(1,2),
-        'password' => bcrypt('123456'),
-        'type' => rand(6,10),
-        'tel' => '88888888',
+        'status' => 1,
+        'password' => '$2y$10$qYsKIW3tO5RjQJRyxagXkuR9wAYwD5ZWuls8DhZnqVY4VMExa1mya', // 123456
+        'type' => 1,
+        'tel' => 13890000111,
         'created_at' => date('Y-m-d h:i:s', time())
+    ];
+});
+
+$factory->define(App\Models\Blacklist::class, function (Faker $faker) {
+    return [
+        'credential' => 'credential',
+        'created_at' => date('Y-m-d h:i:s', time()),
+        'state' => 1
     ];
 });

@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'PRC',
 
     /*
     |--------------------------------------------------------------------------
@@ -105,6 +105,7 @@ return [
     */
 
     'key' => env('APP_KEY'),
+    'appcode' => env('APP_APPCODE'),
 
     'cipher' => 'AES-256-CBC',
 
@@ -177,6 +178,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        iscms\Alisms\AlidayuServiceProvider::class,
+      /*  Toplan\PhpSms\PhpSmsServiceProvider::class,
+        Toplan\Sms\SmsManagerServiceProvider::class*/
 
     ],
 
@@ -226,6 +230,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Input' => Illuminate\Support\Facades\Input::class,
+     /*   'PhpSms' => Toplan\PhpSms\Facades\Sms::class,
+        'SmsManager' => Toplan\Sms\Facades\SmsManager::class*/
 
     ],
 
