@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminCustomerRequest;
 use App\Http\Requests\Admin\CompanyIdRequest;
@@ -14,7 +13,7 @@ class AdminCustomerController extends Controller
     public function getAllCustomersByCompanyId(CompanyIdRequest $request)
     {
         $id = $request->get('company_id');
-        $data = User::where('type', $id)->paginate(8);
+        $data = User::where('type', $id)->select(['id', 'cname', 'status', 'type', 'tel', 'created_at'])->paginate(8);
         $result = ['code' => '200', 'msg' => '成功', 'data' => $data];
         return response()->json($result);
     }
@@ -58,8 +57,10 @@ class AdminCustomerController extends Controller
     public function deleteCustomer(CustomerIdRequest $request)
     {
         $id = $request->get('customer_id');
-        $vis = User::where('id', $id)->delete();
-        if ($vis) {
+        $vis = User::where('id', $id)->first();
+        $vis->status = 2;
+        $check = $vis->save();
+        if ($check) {
             $result = ['code' => '200', 'msg' => '成功', 'data' => null];
         } else {
             $result = ['code' => '100', 'msg' => '失败', 'data' => null];

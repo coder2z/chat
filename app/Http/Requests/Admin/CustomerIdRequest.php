@@ -30,9 +30,10 @@ class CustomerIdRequest extends FormRequest
                 'required', 'integer',
                 function ($attribute, $value, $fail) {
                     $result = User::where('id', $value)->first();
+                    // dd($result);
                     if ($result == false) {
                         return $fail('抱歉,没有该客服id');
-                    }else if(is_numeric($result->type)){
+                    } else if (!is_numeric($result->type)) {
                         return $fail('抱歉,该id的\'type\'字段不正确,请查证后输入准确的公司id');
                     }
                 }

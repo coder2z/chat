@@ -32,8 +32,10 @@ class CompanyIdRequest extends FormRequest
                     $result = User::where('id', $value)->first();
                     if ($result == false) {
                         return $fail('抱歉,没有该公司id');
-                    }else if ($result->type != 'company'){
+                    } else if ($result->type != 'company') {
                         return $fail('抱歉,该id的\'type\'字段不是\'company\',请查证后输入准确的公司id');
+                    } elseif ($result->status == 2) {
+                        return $fail('抱歉,公司已被软删除');
                     }
                 }
             ]
