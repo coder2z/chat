@@ -34,6 +34,8 @@ class AdminCustomerRequest extends FormRequest
                     $result = User::where('id', $value)->first();
                     if ($result == false) {
                         return $fail('抱歉,没有该公司id');
+                    } else if ($result->status == 2) {
+                        return $fail('抱歉,公司已被软删除');
                     }
                 }
             ],
