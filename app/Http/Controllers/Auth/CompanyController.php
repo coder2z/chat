@@ -1,6 +1,12 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers\Auth;
+
+use App\Models\Blacklist;
+use App\Models\Communication;
+use App\Models\Company;
+use App\Models\RobotExtraQa;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -24,26 +30,33 @@ class CompanyController extends Controller
             return response()->fail(100,"失败");
         }
     }
-    //新增问题
+    //新增问题/**/
     public function addQuestion(TableVerify $request,$id){
-        $res = DB::table("chat_robot_extra_qa")
-//            ->leftJoin("chat_company as t2","t1.company_id","=","t2.id")
-//            ->leftJoin("chat_user as t3","t2.chat_user_id","=","t3.id")
-           ->insert([
-                "title"=>$request->title,
-               "synopsis"=>$request->intro,
-               "step"=>$request->Method,
-               "matter_need_atten"=>$request->warning,
-               "created_at"=>date("Y-m-n h:i:s"),
-               "access_at"=>date("Y-m-n h:i:s"),
-               "state"=>1,
-               "company_id"=>$id
-           ]);
-        if($res) {
-            return response()->success(200,"成功",null);
-        }else{
-            return response()->fail(100,"失败");
+        $res = User::find($id);
+        if($res == null){
+            return response()->fail(100,"企业账号不存在");
         }
+        $data = DB::table("chat_user")->select('type')->where('id',$id)->get();
+        foreach($data as $v)
+        {
+            $res = $v->type;
+        }
+        if($res == 'company' || $res == 'admin'){
+            $res = DB::table("chat_robot_extra_qa")
+                ->insert([
+                    "title"=>$request->title,
+                    "synopsis"=>$request->intro,
+                    "step"=>$request->Method,
+                    "matter_need_atten"=>$request->warning,
+                    "created_at"=>date("Y-m-n h:i:s"),
+                    "access_at"=>date("Y-m-n h:i:s"),
+                    "state"=>1,
+                    "company_id"=>$id
+                ]);
+        } else{
+            return response()->fail(100,"新增问题失败");
+        }
+        return response()->success(200,"成功",null);
     }
     //查看客服问答
     public function showQuestions($id){
@@ -117,7 +130,7 @@ class CompanyController extends Controller
             ->leftJoin("chat_user as t2","t1.person_id","=","t2.id")
             ->leftJoin("chat_company as t3","t3.id","=","t1.company_id")
             ->select("t2.id as userID","t2.cname as name","t2.tel as phone","t1.created_at as forbidden_time","t1.state as status")
-            ->where("t3.id",$id)
+            //->where("t3.id",$id)
             ->paginate(4);
         if($res) {
             return response()->success(200,"成功",$res);
@@ -144,26 +157,33 @@ class CompanyController extends Controller
             ->where("id",$id)
             ->delete();
         if($res) {
-            return response()->success(200,"成功",$res);
+            return response()->success(200,"成功",null);
         }else{
-            return response()->fail(100,"失败");
+            return response()->fail(100,"黑名单人员不存在");
         }
     }
     //将指定黑名单人员加入黑名单put
     public function addBlackList($id){
-        $res = DB::table("chat_blacklist")
-            ->insert([
-                "company_id"=>$id,
-                "person_id"=>$id,
-                "credential"=>'111',
-                "created_at"=>date('Y-m-n h:i:s'),
-                'state'=>0,
-                'service_id'=>1
-            ]);
-        if($res) {
-            return response()->success(200,"成功",null);
+        $res = Blacklist::find($id);
+        if($res == null){
+            return response()->fail(100,"黑名单内无此人员");
+        }
+        $res = DB::table('chat_blacklist')
+            ->select('state')
+            ->where('id',$id)
+            ->get();
+        $data = 0;
+        foreach ($res as $v)
+        {
+            $data = $v->state;
+        }
+        if($data == 0){
+            return response()->fail(100,"此人员以在黑名单内");
         }else{
-            return response()->fail(100,"失败");
+            Blacklist::find($id)->update([
+                'state' => 0,
+            ]);
+            return response()->success(200,"成功",null);
         }
     }
 }

@@ -65,7 +65,7 @@ Route::get("/blacklists/detial/{id}","Auth\CompanyController@showBlackList");
 //将指定黑名单人员移除黑名单
 Route::delete("/blacklists/{id}","Auth\CompanyController@removeBlackList");//可以重复添加很多次，没有添加凭证
 //将指定黑名单人员加入黑名单put
-Route::any("/blacklists/{id}","Auth\CompanyController@addBlackList");//？？？any是？？？
+Route::put("/blacklists/{id}","Auth\CompanyController@addBlackList");//？？？any是？？？
 
 
 //李磊 1
