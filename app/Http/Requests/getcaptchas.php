@@ -31,6 +31,7 @@ class getcaptchas extends FormRequest
 
     public function massages(){
         return [
+            'tel.unique' => '电话重复',
             'tel.required' => '电话号码为11位',
             'type.required' => 'type名称不能为空',
         ];

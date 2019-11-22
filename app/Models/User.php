@@ -1,13 +1,9 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
-
-class User extends Model//用户表
+class User extends \Illuminate\Foundation\Auth\User implements \Illuminate\Contracts\Auth\Authenticatable//用户表
 {
-  	protected $rememberTokenName = NULL;
+	protected $rememberTokenName = NULL;
     protected $table = 'chat_user';
     protected $primaryKey = 'id';
     public $timestamps = false;

@@ -33,7 +33,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            //\App\Http\Middleware\VerifyCsrfToken::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
@@ -58,5 +58,15 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'login' => \App\Http\Middleware\Login::class,
+        'chech.admin.power' => \App\Http\Middleware\ChechAdminPower::class,
+        'check.article.power' => \App\Http\Middleware\CheckArticles::class,
+        'check.pic.upload.power' => \App\Http\Middleware\CheckUploadPic::class,
+        'check.question.company.id' => \App\Http\Middleware\CheckQuestionCompanyId::class,
+        'check.question.id' => \App\Http\Middleware\CheckQuestionId::class,
+        'check.black.id' => \App\Http\Middleware\CheckBlackId::class,
+        'check.customer.company' => \App\Http\Middleware\CheckCustomerCompanyId::class,
+        'check.found.company' => \App\Http\Middleware\CheckFoundCompany::class,
+        'check.black.company' => \App\Http\Middleware\CheckBlackCompany::class,
+        'check.company.power' => \App\Http\Middleware\ChechCompanyPower::class,
     ];
 }

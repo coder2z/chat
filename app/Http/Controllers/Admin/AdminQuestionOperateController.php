@@ -19,12 +19,12 @@ class AdminQuestionOperateController extends Controller
         $content = $request->search_content;
         //三表联合查询
         $result = DB::table('chat_robot_extra_qa')
-            ->join('chat_company','chat_robot_extra_qa.company_id','=','chat_company.id')
-            ->join('chat_user','chat_company.chat_user_id','=','chat_user.id')
+            // ->join('chat_company','chat_robot_extra_qa.company_id','=','chat_company.id')
+            ->join('chat_user','chat_robot_extra_qa.company_id','=','chat_user.id')
             ->select('chat_robot_extra_qa.id as question_id', 'chat_robot_extra_qa.title as question_title',
                 'chat_user.cname as question_author','chat_robot_extra_qa.created_at as question_create_time',
                 'chat_robot_extra_qa.access_at as question_access_time','chat_robot_extra_qa.state as question_state')
-        ->where('title','like','%'.$content.'%')->paginate(8);
+        ->where('title','like','%'.$content.'%')->paginate(10);
         if($result){
             return response()->success(200,'成功',$result);
         }
@@ -37,12 +37,12 @@ class AdminQuestionOperateController extends Controller
     //获取全部问题
     public function getAllQuestions(){
         $result = DB::table('chat_robot_extra_qa')
-            ->join('chat_company','chat_robot_extra_qa.company_id','=','chat_company.id')
-            ->join('chat_user','chat_company.chat_user_id','=','chat_user.id')
+            // ->join('chat_company','chat_robot_extra_qa.company_id','=','chat_company.id')
+            ->join('chat_user','chat_robot_extra_qa.company_id','=','chat_user.id')
             ->select('chat_robot_extra_qa.id as question_id', 'chat_robot_extra_qa.title as question_title',
                 'chat_user.cname as question_author','chat_robot_extra_qa.created_at as question_create_time',
                 'chat_robot_extra_qa.access_at as question_access_time','chat_robot_extra_qa.state as question_state')
-            ->paginate(8);
+            ->paginate(10);
         if($result){
             return response()->success(200,'成功',$result);
         }
@@ -59,6 +59,9 @@ class AdminQuestionOperateController extends Controller
                 'step as methed', 'matter_need_atten as careful')
             ->where('id','=',$question_id)->get();
         if($result){
+            $question = RobotExtraQa::where('id',$question_id)->first();
+            $question->clicks++;
+            $question->save();
             return response()->success(200,'成功',$result);
         }
         else{
@@ -85,21 +88,22 @@ class AdminQuestionOperateController extends Controller
         }
     }
 
-    //取消通过审核
-    public function revokeQuestionByQuestionId(RevokeQuestionByQuestionIdRequest $request){
+    //更改审核状态
+    public function changeQuestionStateByQuestionId(RevokeQuestionByQuestionIdRequest $request){
         $question_id = $request->question_id;
+        $question_state = $request->state;
         $stat = RobotExtraQa::where('id','=',$question_id)->first();
         if($stat){
-            $result = RobotExtraQa::where('id','=',$question_id)->update(['state'=>0]);
+            $result = RobotExtraQa::where('id','=',$question_id)->update(['state'=>$question_state]);
             if($result){
-                return response()->success(200,'取消通过审核成功！',null);
+                return response()->success(200,'更改成功！',null);
             }
             else{
-                return response()->fail(100,'取消通过审核失败！',null);
+                return response()->fail(100,'更改成功！',null);
             }
         }
         else{
-            return response()->fail(100,'取消通过审核失败！',null);
+            return response()->fail(100,'更改成功！',null);
         }
     }
 

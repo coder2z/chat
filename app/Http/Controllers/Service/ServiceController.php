@@ -10,7 +10,6 @@ use App\Http\Requests\uploadBlackLists;
 class ServiceController extends Controller
 {
     public function uploadBlackList(uploadBlackLists $Request){
-
     	$input=Input::all();
     	$a=User::where('id',$input['serviceId'])->first();
     	$user = new Blacklist();

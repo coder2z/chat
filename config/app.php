@@ -181,7 +181,9 @@ return [
         iscms\Alisms\AlidayuServiceProvider::class,
       /*  Toplan\PhpSms\PhpSmsServiceProvider::class,
         Toplan\Sms\SmsManagerServiceProvider::class*/
-
+        Barryvdh\Cors\ServiceProvider::class,//跨域
+        \Mews\Captcha\CaptchaServiceProvider::class,//验证码
+        \Mews\Purifier\PurifierServiceProvider::class,//防xss
     ],
 
     /*
@@ -233,6 +235,8 @@ return [
         'Input' => Illuminate\Support\Facades\Input::class,
      /*   'PhpSms' => Toplan\PhpSms\Facades\Sms::class,
         'SmsManager' => Toplan\Sms\Facades\SmsManager::class*/
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,//验证码
+        'Purifier' => Mews\Purifier\Facades\Purifier::class,//防xss
 
     ],
 

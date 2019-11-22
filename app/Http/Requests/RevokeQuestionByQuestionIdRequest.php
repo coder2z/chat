@@ -26,7 +26,8 @@ class RevokeQuestionByQuestionIdRequest extends FormRequest
     public function rules()
     {
         return [
-            'question_id'=>'required',
+            'state' => 'integer|required|max:2|min:0',
+            'question_id'=>'required|integer',
         ];
     }
 

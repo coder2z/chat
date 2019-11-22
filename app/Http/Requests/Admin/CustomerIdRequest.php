@@ -26,6 +26,7 @@ class CustomerIdRequest extends FormRequest
     public function rules()
     {
         return [
+            'state' => 'integer|required|max:2|min:0',
             'customer_id' => [
                 'required', 'integer',
                 function ($attribute, $value, $fail) {
@@ -34,7 +35,7 @@ class CustomerIdRequest extends FormRequest
                     if ($result == false) {
                         return $fail('抱歉,没有该客服id');
                     } else if (!is_numeric($result->type)) {
-                        return $fail('抱歉,该id的\'type\'字段不正确,请查证后输入准确的公司id');
+                        return $fail('抱歉,该id的\'type\'字段不正确,请查证后输入准确的客服id');
                     }
                 }
             ]

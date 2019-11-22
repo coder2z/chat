@@ -12,11 +12,10 @@ class AdminPersonOperateController extends Controller
 {
     public function searchPersonalUser(SearchPersonalUserRequest $request){
 
-           $result =(new User())->select('id','cname','tel','created_at','status')->where('type','person')
-               ->where('cname','=',$request->input('search_content'))
-               ->orwhere('tel','=',$request->input('search_content'))
+           $result =User::select('id','cname','tel','created_at','status')
+               ->where(['cname'=>$request->input('search_content'),'type'=>'person'])
+               ->orwhere(['tel'=>$request->input('search_content'),'type'=>'person'])
                ->first();
-
            if($result){
                return response()->success(200,'成功',$result);
            }
@@ -29,7 +28,7 @@ class AdminPersonOperateController extends Controller
     }
 
     public function getAllPersonalUser(){
-        $result=(new User())->where('type','person')->paginate(8);
+        $result=(new User())->where('type','person')->paginate(10);
 
         if($result){
 
@@ -68,9 +67,9 @@ class AdminPersonOperateController extends Controller
 
     public function updatePersonalUserByUserId(UpdatePersonalUserByUserIdRequest $request){
 
-            $result = (new User())->where('id','=',$request->input('person_id'))
-                ->update(['status'=>$request->input('person_state')]);
-            if($result){
+            $user = User::where('id',$request->input('person_id'))->first();
+            $user->status = $request->input('person_state');
+            if($user->save()){
                 return response()->success(200,'成功',null);
             }else{
                 return response()->fail(100,'更新失败,请检查用户id是否正确',null);

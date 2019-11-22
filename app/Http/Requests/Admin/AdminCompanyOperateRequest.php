@@ -27,7 +27,7 @@ class AdminCompanyOperateRequest extends FormRequest
         return [
             'company_name' => 'required|string|between:1,255|unique:chat_user,cname',
             'password' => 'required|string|between:1,255',
-            'company_phone' => 'required|string|size:11'
+            'company_phone' => 'required|string|size:11|unique:chat_user,tel'
         ];
     }
     public function messages()
@@ -46,6 +46,7 @@ class AdminCompanyOperateRequest extends FormRequest
             'company_phone.required' => '电话不能为空',
             'company_phone.string' => '电话仅支持字符串',
             'company_phone.size' => '电话长度为11位',
+            'company_phone.unique' => '电话重复'
         ];
     }
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

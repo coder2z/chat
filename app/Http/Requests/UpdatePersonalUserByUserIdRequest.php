@@ -27,7 +27,7 @@ class UpdatePersonalUserByUserIdRequest extends FormRequest
     {
         return [
             'person_id'=>'required',
-            'person_state'=>'required|in:0,1'
+            'person_state'=>'required|in:0,1,2'
         ];
     }
     public function messages()

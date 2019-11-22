@@ -36,10 +36,10 @@ class PictureUpdateController extends Controller
                 $returnname = 'storage'.'/'.$name;
                 $stat = Storage::disk('admin')->put($name,file_get_contents($path));
                 if($stat){
-                   return response()->success(100,'添加成功！',$returnname);
+                   return response()->success(200,'添加成功！',$returnname);
                 }
                 else{
-                    return response()->fail(200,'添加失败，请重试！',null);
+                    return response()->fail(100,'添加失败，请重试！',null);
                 }
             }
        }

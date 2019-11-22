@@ -27,9 +27,8 @@ class Registers extends FormRequest
         return [
             'cname' => 'required|min:1|max:10',
             'password' => 'required|min:6|max:20',
-            'tel' => 'required|min:11|max:11',
-            'code' => 'required|min:5|max:5',
-            'url' => 'required'
+            'tel' => 'required|min:11|max:11|unique:chat_user,tel',
+            'code' => 'required|min:6|max:6',
         ];
     }
 

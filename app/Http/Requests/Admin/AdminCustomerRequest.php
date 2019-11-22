@@ -27,16 +27,17 @@ class AdminCustomerRequest extends FormRequest
     {
         return [
             'customer_name' => 'required|string|between:1,255|unique:chat_user,cname',
-            'customer_phone' => 'required|string|size:11',
+            'customer_phone' => 'required|string|size:11|unique:chat_user,tel',
             'customer_company_id' => [
                 'required', 'string', 'between:1,11',
                 function ($attribute, $value, $fail) {
                     $result = User::where('id', $value)->first();
                     if ($result == false) {
                         return $fail('抱歉,没有该公司id');
-                    } else if ($result->status == 2) {
-                        return $fail('抱歉,公司已被软删除');
-                    }
+                    } 
+                    // else if ($result->status == 1) {
+                    //     return $fail('抱歉,公司已被软删除');
+                    // }
                 }
             ],
             'customer_password' => 'required|string|between:1,255',
@@ -63,6 +64,7 @@ class AdminCustomerRequest extends FormRequest
             'customer_phone.required' => '电话不能为空',
             'customer_phone.string' => '电话仅支持字符串',
             'customer_phone.size' => '电话长度为11位',
+            'customer_phone.unique' => '电话重复',
         ];
     }
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
